@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Detail - Deb. B Portfolio</title>
+    <meta name="description" content="Project details from Deb. B's portfolio" />
+    <link rel="stylesheet" href="src/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      .detail-page {
+        min-height: 100vh;
+        background: var(--bg-primary);
+        padding-top: 80px;
+      }
+
+      .detail-container {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: 64px 24px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--color-primary);
+        font-weight: 500;
+        margin-bottom: 32px;
+        transition: color var(--transition-normal);
+      }
+
+      .back-link:hover {
+        color: var(--color-highlight);
+      }
+
+      .project-hero {
+        height: 400px;
+        border-radius: 24px;
+        margin-bottom: 48px;
+        position: relative;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .project-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      .project-hero.no-image::after {
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .project-hero-content {
+        position: relative;
+        z-index: 10;
+      }
+
+      .detail-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 16px;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .detail-description {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 48px;
+        line-height: 1.8;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 48px;
+        margin-bottom: 48px;
+      }
+
+      .detail-section {
+        margin-bottom: 48px;
+      }
+
+      .detail-section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 24px;
+      }
+
+      .detail-text {
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 16px;
+      }
+
+      .feature-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .feature-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        color: var(--text-secondary);
+      }
+
+      .feature-list li::before {
+        content: '●';
+        color: var(--color-primary);
+        font-size: 1.25rem;
+        line-height: 1;
+      }
+
+      .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .tech-tag {
+        padding: 8px 16px;
+        background: rgba(71, 52, 114, 0.3);
+        color: var(--color-highlight);
+        border-radius: 9999px;
+        border: 1px solid rgba(135, 186, 195, 0.3);
+        font-size: 0.875rem;
+        transition: all var(--transition-normal);
+      }
+
+      .tech-tag:hover {
+        border-color: var(--color-primary);
+        background: rgba(135, 186, 195, 0.1);
+      }
+
+      .action-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding-top: 32px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all var(--transition-normal);
+        text-decoration: none;
+      }
+
+      .action-btn-primary {
+        background: var(--gradient-primary);
+        color: var(--text-primary);
+      }
+
+      .action-btn-primary:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .action-btn-secondary {
+        border: 2px solid rgba(135, 186, 195, 0.5);
+        color: var(--text-primary);
+      }
+
+      .action-btn-secondary:hover {
+        background: rgba(135, 186, 195, 0.1);
+      }
+
+      .loading-state {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-primary);
+      }
+
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid rgba(135, 186, 195, 0.2);
+        border-top-color: var(--color-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .error-state,
+      .not-found-state {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-primary);
+        padding: 24px;
+        text-align: center;
+      }
+
+      .error-title,
+      .not-found-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 16px;
+      }
+
+      .error-text,
+      .not-found-text {
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+      }
+
+      @media (max-width: 768px) {
+        .detail-title {
+          font-size: 2rem;
+        }
+
+        .detail-grid {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        .action-buttons {
+          grid-template-columns: 1fr;
+        }
+
+        .project-hero {
+          height: 256px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">Deb. B</a>
+
+        <div class="nav-menu" id="navMenu">
+          <a href="index.html#home" class="nav-link">Home</a>
+          <a href="index.html#about" class="nav-link">About</a>
+          <a href="index.html#projects" class="nav-link">Projects</a>
+          <a href="index.html#skills" class="nav-link">Skills</a>
+          <a href="index.html#blog" class="nav-link">Blog</a>
+          <a href="index.html#contact" class="nav-link">Contact</a>
+        </div>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-state">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorState" class="error-state" style="display: none;">
+      <h1 class="error-title">Error Loading Project</h1>
+      <p class="error-text">Something went wrong. Please try again later.</p>
+      <a href="index.html#projects" class="btn btn-primary">Back to Projects</a>
+    </div>
+
+    <!-- Not Found State -->
+    <div id="notFoundState" class="not-found-state" style="display: none;">
+      <h1 class="not-found-title">Project Not Found</h1>
+      <p class="not-found-text">The project you're looking for doesn't exist or has been removed.</p>
+      <a href="index.html#projects" class="btn btn-primary">Back to Projects</a>
+    </div>
+
+    <!-- Project Detail Content -->
+    <div id="projectDetail" class="detail-page" style="display: none;">
+      <div class="detail-container">
+        <a href="index.html#projects" class="back-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          Back to Projects
+        </a>
+
+        <div id="projectHero" class="project-hero"></div>
+
+        <div class="project-hero-content">
+          <h1 id="projectTitle" class="detail-title"></h1>
+          <p id="projectDescription" class="detail-description"></p>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-section">
+            <h2 class="detail-section-title">Overview</h2>
+            <p class="detail-text">
+              This project showcases my expertise in building full-featured applications with modern technologies.
+              Every aspect was carefully designed and implemented to deliver an exceptional user experience.
+            </p>
+            <p class="detail-text">
+              From the initial concept to final deployment, I focused on code quality, performance optimization,
+              and maintaining clean architecture throughout the development process.
+            </p>
+          </div>
+
+          <div class="detail-section">
+            <h2 class="detail-section-title">Key Features</h2>
+            <ul class="feature-list">
+              <li>Responsive design that works across all devices</li>
+              <li>Optimized performance and fast load times</li>
+              <li>Scalable architecture for future growth</li>
+              <li>Clean, maintainable code following best practices</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h2 class="detail-section-title">Technologies Used</h2>
+          <div id="tagsContainer" class="tags-container"></div>
+        </div>
+
+        <div class="action-buttons">
+          <a href="#" id="liveLink" class="action-btn action-btn-primary" target="_blank" rel="noopener noreferrer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            View Live Project
+          </a>
+          <a href="#" id="codeLink" class="action-btn action-btn-secondary" target="_blank" rel="noopener noreferrer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 22v-4a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v4"/><path d="m6 9 6 6 6-6"/><path d="M18 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3"/>
+            </svg>
+            View Source Code
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Supabase Configuration
+      const SUPABASE_URL = 'https://cplumkztiwgxltcmvmqf.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwbHVta3p0aXdneGx0Y212bXFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyODkzNzMsImV4cCI6MjA3ODg2NTM3M30.VyGGDarSSXqwE4QitqZGfmD_FoMguIWSTinjKqNa70c';
+
+      // Fetch from Supabase
+      async function fetchFromSupabase(endpoint) {
+        try {
+          const response = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          return await response.json();
+        } catch (error) {
+          console.error('Error fetching from Supabase:', error);
+          return null;
+        }
+      }
+
+      // Get URL parameter
+      function getUrlParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+      }
+
+      // Get gradient class based on index
+      function getGradientClass(index) {
+        const gradients = [
+          'linear-gradient(135deg, rgba(135, 186, 195, 0.3), rgba(83, 98, 158, 0.3))',
+          'linear-gradient(135deg, rgba(83, 98, 158, 0.3), rgba(71, 52, 114, 0.3))',
+          'linear-gradient(135deg, rgba(71, 52, 114, 0.3), rgba(135, 186, 195, 0.3))'
+        ];
+        return gradients[index % gradients.length];
+      }
+
+      // Load project detail
+      async function loadProjectDetail() {
+        const projectId = getUrlParameter('id');
+
+        if (!projectId) {
+          document.getElementById('loadingState').style.display = 'none';
+          document.getElementById('notFoundState').style.display = 'flex';
+          return;
+        }
+
+        try {
+          const projects = await fetchFromSupabase(`projects?id=eq.${projectId}`);
+
+          document.getElementById('loadingState').style.display = 'none';
+
+          if (!projects || projects.length === 0) {
+            document.getElementById('notFoundState').style.display = 'flex';
+            return;
+          }
+
+          const project = projects[0];
+
+          // Set project hero background
+          const heroEl = document.getElementById('projectHero');
+          
+          // Check if project has an image
+          if (project.image_url || project.thumbnail || project.cover_image) {
+            const imageUrl = project.image_url || project.thumbnail || project.cover_image;
+            heroEl.style.backgroundImage = `url(${imageUrl})`;
+            heroEl.classList.remove('no-image');
+          } else {
+            // Use gradient fallback
+            const gradientClass = getGradientClass(parseInt(projectId) - 1);
+            heroEl.style.backgroundImage = gradientClass;
+            heroEl.classList.add('no-image');
+          }
+
+          // Set project title
+          document.getElementById('projectTitle').textContent = project.title;
+
+          // Set project description
+          document.getElementById('projectDescription').textContent = project.description;
+
+          // Set tags
+          const tagsContainer = document.getElementById('tagsContainer');
+          if (project.tags && project.tags.length > 0) {
+            tagsContainer.innerHTML = project.tags.map(tag =>
+              `<span class="tech-tag">${tag}</span>`
+            ).join('');
+          }
+
+          // Show project detail
+          document.getElementById('projectDetail').style.display = 'block';
+
+          // Update page title
+          document.title = `${project.title} - Deb. B Portfolio`;
+
+        } catch (error) {
+          console.error('Error loading project:', error);
+          document.getElementById('loadingState').style.display = 'none';
+          document.getElementById('errorState').style.display = 'flex';
+        }
+      }
+
+      // Navigation Toggle
+      const navToggle = document.getElementById('navToggle');
+      const navMenu = document.getElementById('navMenu');
+
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');
+          navToggle.classList.toggle('active');
+        });
+      }
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', loadProjectDetail);
+    </script>
+  </body>
+</html>

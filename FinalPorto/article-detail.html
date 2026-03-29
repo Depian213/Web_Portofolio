@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Article Detail - Deb. B Portfolio</title>
+    <meta name="description" content="Article from Deb. B's portfolio" />
+    <link rel="stylesheet" href="src/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      .detail-page {
+        min-height: 100vh;
+        background: var(--bg-primary);
+        padding-top: 80px;
+      }
+
+      .detail-container {
+        max-width: 896px;
+        margin: 0 auto;
+        padding: 64px 24px;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--color-primary);
+        font-weight: 500;
+        margin-bottom: 32px;
+        transition: color var(--transition-normal);
+      }
+
+      .back-link:hover {
+        color: var(--color-highlight);
+      }
+
+      .article-cover {
+        height: 400px;
+        border-radius: 24px;
+        margin-bottom: 48px;
+        background: linear-gradient(135deg, rgba(135, 186, 195, 0.8), rgba(83, 98, 158, 0.8));
+        background-size: cover;
+        background-position: center;
+      }
+
+      .article-cover.no-image {
+        background: linear-gradient(135deg, rgba(135, 186, 195, 0.3), rgba(83, 98, 158, 0.3));
+      }
+
+      .article-header {
+        margin-bottom: 48px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .detail-title {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 24px;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+      }
+
+      .article-meta {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .share-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: color var(--transition-normal);
+      }
+
+      .share-btn:hover {
+        color: var(--color-primary);
+      }
+
+      .article-content {
+        margin-bottom: 48px;
+      }
+
+      .article-body {
+        color: var(--text-secondary);
+        line-height: 2;
+        font-size: 1.1rem;
+        white-space: pre-wrap;
+      }
+
+      .article-body p {
+        margin-bottom: 24px;
+      }
+
+      .article-body h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 48px 0 24px;
+      }
+
+      .article-body h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 32px 0 16px;
+      }
+
+      .article-body ul,
+      .article-body ol {
+        margin: 24px 0;
+        padding-left: 24px;
+      }
+
+      .article-body li {
+        margin-bottom: 12px;
+      }
+
+      .article-body code {
+        background: rgba(71, 52, 114, 0.3);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-family: 'Monaco', 'Consolas', monospace;
+        font-size: 0.9em;
+        color: var(--color-highlight);
+      }
+
+      .article-body pre {
+        background: rgba(10, 10, 10, 0.8);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 24px;
+        overflow-x: auto;
+        margin: 24px 0;
+      }
+
+      .article-body pre code {
+        background: none;
+        padding: 0;
+      }
+
+      .article-body blockquote {
+        border-left: 4px solid var(--color-primary);
+        padding-left: 24px;
+        margin: 24px 0;
+        font-style: italic;
+        color: var(--text-secondary);
+      }
+
+      .author-box {
+        padding: 32px;
+        background: linear-gradient(135deg, rgba(71, 52, 114, 0.2), rgba(83, 98, 158, 0.2));
+        border: 1px solid rgba(135, 186, 195, 0.3);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 48px;
+      }
+
+      .author-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: var(--gradient-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--text-primary);
+        flex-shrink: 0;
+      }
+
+      .author-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .author-name {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+      }
+
+      .author-role {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      .more-articles {
+        margin-top: 64px;
+        padding-top: 32px;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .more-articles-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 24px;
+      }
+
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        background: rgba(71, 52, 114, 0.3);
+        color: var(--color-primary);
+        border: 1px solid rgba(135, 186, 195, 0.3);
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all var(--transition-normal);
+        text-decoration: none;
+      }
+
+      .back-btn:hover {
+        background: rgba(71, 52, 114, 0.5);
+        border-color: var(--color-primary);
+      }
+
+      .loading-state {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-primary);
+      }
+
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid rgba(135, 186, 195, 0.2);
+        border-top-color: var(--color-primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .error-state,
+      .not-found-state {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-primary);
+        padding: 24px;
+        text-align: center;
+      }
+
+      .error-title,
+      .not-found-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 16px;
+      }
+
+      .error-text,
+      .not-found-text {
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+      }
+
+      @media (max-width: 768px) {
+        .detail-title {
+          font-size: 2rem;
+        }
+
+        .article-cover {
+          height: 256px;
+        }
+
+        .article-meta {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .author-box {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">Deb. B</a>
+
+        <div class="nav-menu" id="navMenu">
+          <a href="index.html#home" class="nav-link">Home</a>
+          <a href="index.html#about" class="nav-link">About</a>
+          <a href="index.html#projects" class="nav-link">Projects</a>
+          <a href="index.html#skills" class="nav-link">Skills</a>
+          <a href="index.html#blog" class="nav-link">Blog</a>
+          <a href="index.html#contact" class="nav-link">Contact</a>
+        </div>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-state">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorState" class="error-state" style="display: none;">
+      <h1 class="error-title">Error Loading Article</h1>
+      <p class="error-text">Something went wrong. Please try again later.</p>
+      <a href="index.html#blog" class="btn btn-primary">Back to Blog</a>
+    </div>
+
+    <!-- Not Found State -->
+    <div id="notFoundState" class="not-found-state" style="display: none;">
+      <h1 class="not-found-title">Article Not Found</h1>
+      <p class="not-found-text">The article you're looking for doesn't exist or has been removed.</p>
+      <a href="index.html#blog" class="btn btn-primary">Back to Blog</a>
+    </div>
+
+    <!-- Article Detail Content -->
+    <div id="articleDetail" class="detail-page" style="display: none;">
+      <div class="detail-container">
+        <a href="index.html#blog" class="back-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          Back to Blog
+        </a>
+
+        <article>
+          <div id="articleCover" class="article-cover"></div>
+
+          <div class="article-header">
+            <h1 id="articleTitle" class="detail-title"></h1>
+            
+            <div class="article-meta">
+              <div class="meta-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span id="articleDate"></span>
+              </div>
+              <button class="share-btn" onclick="shareArticle()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+                Share
+              </button>
+            </div>
+          </div>
+
+          <div id="articleContent" class="article-body"></div>
+
+          <div class="author-box">
+            <div class="author-avatar">DB</div>
+            <div class="author-info">
+              <p class="author-name">Written by Deb. B</p>
+              <p class="author-role">Creative Developer & Author</p>
+            </div>
+          </div>
+
+          <div class="more-articles">
+            <h3 class="more-articles-title">More Articles</h3>
+            <a href="index.html#blog" class="back-btn">
+              Back to All Articles
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <script>
+      // Supabase Configuration
+      const SUPABASE_URL = 'https://cplumkztiwgxltcmvmqf.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwbHVta3p0aXdneGx0Y212bXFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyODkzNzMsImV4cCI6MjA3ODg2NTM3M30.VyGGDarSSXqwE4QitqZGfmD_FoMguIWSTinjKqNa70c';
+
+      // Fetch from Supabase
+      async function fetchFromSupabase(endpoint) {
+        try {
+          const response = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
+            headers: {
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          return await response.json();
+        } catch (error) {
+          console.error('Error fetching from Supabase:', error);
+          return null;
+        }
+      }
+
+      // Get URL parameter
+      function getUrlParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+      }
+
+      // Format date
+      function formatDate(dateString) {
+        if (!dateString) return '';
+        return new Date(dateString).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+
+      // Share article
+      function shareArticle() {
+        if (navigator.share) {
+          navigator.share({
+            title: document.getElementById('articleTitle').textContent,
+            url: window.location.href
+          }).catch(err => console.log('Error sharing:', err));
+        } else {
+          // Fallback: copy to clipboard
+          navigator.clipboard.writeText(window.location.href).then(() => {
+            alert('Link copied to clipboard!');
+          });
+        }
+      }
+
+      // Load article detail
+      async function loadArticleDetail() {
+        const slug = getUrlParameter('slug');
+
+        if (!slug) {
+          document.getElementById('loadingState').style.display = 'none';
+          document.getElementById('notFoundState').style.display = 'flex';
+          return;
+        }
+
+        try {
+          const articles = await fetchFromSupabase(`articles?slug=eq.${slug}&published=eq.true`);
+
+          document.getElementById('loadingState').style.display = 'none';
+
+          if (!articles || articles.length === 0) {
+            document.getElementById('notFoundState').style.display = 'flex';
+            return;
+          }
+
+          const article = articles[0];
+
+          // Set article cover
+          const coverEl = document.getElementById('articleCover');
+          if (article.cover_image || article.thumbnail || article.image_url) {
+            const imageUrl = article.cover_image || article.thumbnail || article.image_url;
+            coverEl.style.backgroundImage = `url(${imageUrl})`;
+            coverEl.classList.remove('no-image');
+          } else {
+            // Use gradient fallback
+            coverEl.style.backgroundImage = 'linear-gradient(135deg, rgba(135, 186, 195, 0.3), rgba(83, 98, 158, 0.3))';
+            coverEl.classList.add('no-image');
+          }
+
+          // Set article title
+          document.getElementById('articleTitle').textContent = article.title;
+
+          // Set article date
+          document.getElementById('articleDate').textContent = formatDate(article.published_at);
+
+          // Set article content
+          const contentEl = document.getElementById('articleContent');
+          if (article.content) {
+            // Simple formatting - convert newlines to paragraphs
+            const paragraphs = article.content.split('\n\n').filter(p => p.trim());
+            contentEl.innerHTML = paragraphs.map(p => `<p>${p}</p>`).join('');
+          }
+
+          // Show article detail
+          document.getElementById('articleDetail').style.display = 'block';
+
+          // Update page title
+          document.title = `${article.title} - Deb. B Portfolio`;
+
+        } catch (error) {
+          console.error('Error loading article:', error);
+          document.getElementById('loadingState').style.display = 'none';
+          document.getElementById('errorState').style.display = 'flex';
+        }
+      }
+
+      // Navigation Toggle
+      const navToggle = document.getElementById('navToggle');
+      const navMenu = document.getElementById('navMenu');
+
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');
+          navToggle.classList.toggle('active');
+        });
+      }
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', loadArticleDetail);
+    </script>
+  </body>
+</html>
