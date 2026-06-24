@@ -46,8 +46,13 @@ CREATE TABLE IF NOT EXISTS projects (
   tags text[] DEFAULT '{}',
   gradient text DEFAULT 'from-[#87BAC3] to-[#53629E]',
   "order" integer DEFAULT 0,
+  image_url text null,
+  thumbnail text null,
+  cover_image text null,
   created_at timestamptz DEFAULT now(),
-  updated_at timestamptz DEFAULT now()
+  updated_at timestamptz DEFAULT now(),
+  live_url text not null
+  code_url text not null
 );
 
 CREATE TABLE IF NOT EXISTS testimonials (
@@ -55,7 +60,7 @@ CREATE TABLE IF NOT EXISTS testimonials (
   author text NOT NULL,
   role text NOT NULL,
   content text NOT NULL,
-  image_url text,
+  image_url text null ,
   "order" integer DEFAULT 0,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now()
@@ -71,7 +76,9 @@ CREATE TABLE IF NOT EXISTS articles (
   published_at timestamptz,
   created_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now(),
-  cover_image text
+  cover_image text null
+  thumbnail text null
+  image_url text null
 );
 
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;

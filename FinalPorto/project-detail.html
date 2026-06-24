@@ -254,7 +254,6 @@
     </style>
   </head>
   <body>
-    <!-- Navigation -->
     <nav class="navbar">
       <div class="nav-container">
         <a href="index.html" class="nav-logo">Deb. B</a>
@@ -274,26 +273,22 @@
       </div>
     </nav>
 
-    <!-- Loading State -->
     <div id="loadingState" class="loading-state">
       <div class="loading-spinner"></div>
     </div>
 
-    <!-- Error State -->
     <div id="errorState" class="error-state" style="display: none;">
       <h1 class="error-title">Error Loading Project</h1>
       <p class="error-text">Something went wrong. Please try again later.</p>
       <a href="index.html#projects" class="btn btn-primary">Back to Projects</a>
     </div>
 
-    <!-- Not Found State -->
     <div id="notFoundState" class="not-found-state" style="display: none;">
       <h1 class="not-found-title">Project Not Found</h1>
       <p class="not-found-text">The project you're looking for doesn't exist or has been removed.</p>
       <a href="index.html#projects" class="btn btn-primary">Back to Projects</a>
     </div>
 
-    <!-- Project Detail Content -->
     <div id="projectDetail" class="detail-page" style="display: none;">
       <div class="detail-container">
         <a href="index.html#projects" class="back-link">
@@ -340,13 +335,13 @@
         </div>
 
         <div class="action-buttons">
-          <a href="#" id="liveLink" class="action-btn action-btn-primary" target="_blank" rel="noopener noreferrer">
+          <a href="project.live_url" id="liveLink" class="action-btn action-btn-primary" target="_blank" rel="noopener noreferrer">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
             </svg>
             View Live Project
           </a>
-          <a href="#" id="codeLink" class="action-btn action-btn-secondary" target="_blank" rel="noopener noreferrer">
+          <a href="project.code_url" id="codeLink" class="action-btn action-btn-secondary" target="_blank" rel="noopener noreferrer">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M15 22v-4a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v4"/><path d="m6 9 6 6 6-6"/><path d="M18 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3"/>
             </svg>
@@ -421,6 +416,12 @@
 
           const project = projects[0];
 
+          // Set Tautan Aksi Dinamis ke Tombol HTML
+          const liveLinkBtn = document.getElementById('liveLink');
+          const codeLinkBtn = document.getElementById('codeLink');
+          if (liveLinkBtn) liveLinkBtn.href = project.live_url || 'project.live_url';
+          if (codeLinkBtn) codeLinkBtn.href = project.code_url || 'project.code_url';
+
           // Set project hero background
           const heroEl = document.getElementById('projectHero');
           
@@ -430,8 +431,10 @@
             heroEl.style.backgroundImage = `url(${imageUrl})`;
             heroEl.classList.remove('no-image');
           } else {
-            // Use gradient fallback
-            const gradientClass = getGradientClass(parseInt(projectId) - 1);
+            // Use gradient fallback safely handling UUID or integers
+            const parsedId = parseInt(projectId);
+            const gradientIndex = isNaN(parsedId) ? projectId.length : parsedId - 1;
+            const gradientClass = getGradientClass(gradientIndex || 0);
             heroEl.style.backgroundImage = gradientClass;
             heroEl.classList.add('no-image');
           }
